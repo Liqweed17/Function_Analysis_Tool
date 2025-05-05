@@ -290,13 +290,13 @@ class FunctionAnalyzerApp:
 
         # Plot original function
         self.ax.plot(x_vals, f_vals, label=f'f(x) = {str(expr)}',
-                    color=self.colors['function'], linewidth=2)
+                     color=self.colors['function'], linewidth=2)
 
         if show_derivative:
             try:
                 deriv_vals = self.numerical_derivative(f, x_vals)
                 self.ax.plot(x_vals, deriv_vals, label='Derivative',
-                            color=self.colors['derivative'], linewidth=2)
+                             color=self.colors['derivative'], linewidth=2)
 
                 x_sym = sp.symbols('x')
                 deriv_expr = sp.diff(expr, x_sym)
@@ -311,7 +311,7 @@ class FunctionAnalyzerApp:
             try:
                 integral_vals = self.integral_function(f, x_vals)
                 self.ax.plot(x_vals, integral_vals, label='Integral',
-                            color=self.colors['integral'], linewidth=2)
+                             color=self.colors['integral'], linewidth=2)
 
                 x_sym = sp.symbols('x')
                 integral_expr = sp.integrate(expr, x_sym)
@@ -334,7 +334,8 @@ class FunctionAnalyzerApp:
         for spine in self.ax.spines.values():
             spine.set_color(self.colors['border'])
 
-        self.canvas.draw()
+        # Explicitly draw the canvas to ensure the graph is displayed
+        self.canvas_plot.draw()
 
 
 if __name__ == "__main__":
