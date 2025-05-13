@@ -5,7 +5,6 @@ import sympy as sp
 import tkinter as tk
 from tkinter import ttk, messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import math
 
 
 class FunctionAnalyzerApp:
@@ -13,12 +12,12 @@ class FunctionAnalyzerApp:
         self.root = root
         self.root.title("Function Analysis Tool")
         self.root.geometry("800x750")
-        self.root.configure(bg='#f0f5ff')  # Light blue background
+        self.root.configure(bg='#1e1e1e')  # Dark background
 
         # Create a scrollable canvas
-        self.canvas = tk.Canvas(root, bg='#f0f5ff')
+        self.canvas = tk.Canvas(root, bg='#1e1e1e')
         self.scrollbar = tk.Scrollbar(root, orient=tk.VERTICAL, command=self.canvas.yview)
-        self.scrollable_frame = tk.Frame(self.canvas, bg='#f0f5ff')
+        self.scrollable_frame = tk.Frame(self.canvas, bg='#1e1e1e')
 
         # Configure the canvas and scrollbar
         self.scrollable_frame.bind(
@@ -33,16 +32,16 @@ class FunctionAnalyzerApp:
 
         # Color scheme
         self.colors = {
-            'background': '#f0f5ff',
-            'card': '#ffffff',
-            'primary': '#1e88e5',
-            'text': '#333333',
-            'secondary_text': '#555555',
-            'border': '#bbdefb',
-            'function': '#1e88e5',
-            'derivative': '#f44336',
-            'integral': '#4caf50',
-            'highlight': '#e3f2fd'
+            'background': '#1e1e1e',
+            'card': '#2e2e2e',
+            'primary': '#00bcd4',
+            'text': '#ffffff',
+            'secondary_text': '#cccccc',
+            'border': '#444444',
+            'function': '#00bcd4',
+            'derivative': '#ff4081',
+            'integral': '#8bc34a',
+            'highlight': '#3a3a3a'
         }
 
         # Main container
@@ -53,7 +52,7 @@ class FunctionAnalyzerApp:
         title_frame = tk.Frame(self.main_frame, bg=self.colors['background'])
         title_frame.pack(fill=tk.X, pady=(0, 15))
         tk.Label(title_frame, text="Function Analysis Tool",
-                 font=('Helvetica', 16, 'bold'),
+                 font=('Arial', 16, 'bold'),
                  bg=self.colors['background'],
                  fg=self.colors['primary']).pack()
 
@@ -65,7 +64,7 @@ class FunctionAnalyzerApp:
         input_card.pack(fill=tk.X, pady=5)
 
         tk.Label(input_card, text="Enter a Function (Python Syntax)",
-                 font=('Helvetica', 12, 'bold'),
+                 font=('Arial', 12, 'bold'),
                  bg=self.colors['card'],
                  fg=self.colors['primary']).pack(anchor=tk.W, pady=(0, 10))
 
@@ -78,17 +77,21 @@ class FunctionAnalyzerApp:
 
         self.function_entry = tk.Entry(input_card, font=('Courier', 12),
                                        bd=1, relief=tk.SOLID, highlightthickness=1,
-                                       highlightbackground=self.colors['border'])
+                                       highlightbackground=self.colors['border'],
+                                       fg=self.colors['text'],
+                                       bg='#121212',
+                                       insertbackground=self.colors['text'])
         self.function_entry.pack(fill=tk.X, pady=5)
         self.function_entry.insert(0, "x**2 + 3*x + 5")
 
         submit_btn = tk.Button(input_card, text="Submit",
-                               font=('Helvetica', 10, 'bold'),
+                               font=('Arial', 10, 'bold'),
                                bg=self.colors['primary'],
                                fg='white',
-                               activebackground='#1565c0',
+                               activebackground='#0097a7',
                                activeforeground='white',
                                relief=tk.FLAT,
+                               cursor="hand2",
                                command=self.analyze_function)
         submit_btn.pack(pady=5, ipadx=10, ipady=5)
 
@@ -100,7 +103,7 @@ class FunctionAnalyzerApp:
         options_card.pack(fill=tk.X, pady=5)
 
         tk.Label(options_card, text="Select Options",
-                 font=('Helvetica', 12, 'bold'),
+                 font=('Arial', 12, 'bold'),
                  bg=self.colors['card'],
                  fg=self.colors['primary']).pack(anchor=tk.W, pady=(0, 10))
 
@@ -108,31 +111,37 @@ class FunctionAnalyzerApp:
         range_frame.pack(fill=tk.X, pady=5)
 
         tk.Label(range_frame, text="Select Range of x values",
-                 font=('Helvetica', 10),
+                 font=('Arial', 10),
                  bg=self.colors['card'],
                  fg=self.colors['text']).pack(side=tk.LEFT, padx=5)
 
         min_frame = tk.Frame(range_frame, bg=self.colors['card'])
         min_frame.pack(side=tk.LEFT, padx=10)
         tk.Label(min_frame, text="Min",
-                 font=('Helvetica', 10),
+                 font=('Arial', 10),
                  bg=self.colors['card'],
                  fg=self.colors['text']).pack()
-        self.min_entry = tk.Entry(min_frame, width=8, font=('Helvetica', 10),
+        self.min_entry = tk.Entry(min_frame, width=8, font=('Arial', 10),
                                   bd=1, relief=tk.SOLID,
-                                  highlightbackground=self.colors['border'])
+                                  highlightbackground=self.colors['border'],
+                                  fg=self.colors['text'],
+                                  bg='#121212',
+                                  insertbackground=self.colors['text'])
         self.min_entry.pack()
         self.min_entry.insert(0, "-5")
 
         max_frame = tk.Frame(range_frame, bg=self.colors['card'])
         max_frame.pack(side=tk.LEFT, padx=10)
         tk.Label(max_frame, text="Max",
-                 font=('Helvetica', 10),
+                 font=('Arial', 10),
                  bg=self.colors['card'],
                  fg=self.colors['text']).pack()
-        self.max_entry = tk.Entry(max_frame, width=8, font=('Helvetica', 10),
+        self.max_entry = tk.Entry(max_frame, width=8, font=('Arial', 10),
                                   bd=1, relief=tk.SOLID,
-                                  highlightbackground=self.colors['border'])
+                                  highlightbackground=self.colors['border'],
+                                  fg=self.colors['text'],
+                                  bg='#121212',
+                                  insertbackground=self.colors['text'])
         self.max_entry.pack()
         self.max_entry.insert(0, "5")
 
@@ -140,38 +149,33 @@ class FunctionAnalyzerApp:
         operation_frame.pack(fill=tk.X, pady=10)
 
         tk.Label(operation_frame, text="Choose Operation:",
-                 font=('Helvetica', 10),
+                 font=('Arial', 10),
                  bg=self.colors['card'],
                  fg=self.colors['text']).pack(side=tk.LEFT, padx=5)
 
         self.operation_var = tk.StringVar(value="diff")
 
+        radio_config = {
+            'font': ('Arial', 10),
+            'bg': self.colors['card'],
+            'fg': self.colors['primary'],
+            'selectcolor': self.colors['card'],
+            'activebackground': self.colors['card'],
+            'activeforeground': self.colors['primary'],
+            'cursor': 'hand2'
+        }
+
         tk.Radiobutton(operation_frame, text="Differentiation",
                        variable=self.operation_var, value="diff",
-                       font=('Helvetica', 10),
-                       bg=self.colors['card'],
-                       fg=self.colors['primary'],
-                       selectcolor=self.colors['card'],
-                       activebackground=self.colors['card'],
-                       activeforeground=self.colors['primary']).pack(side=tk.LEFT, padx=5)
+                       **radio_config).pack(side=tk.LEFT, padx=5)
 
         tk.Radiobutton(operation_frame, text="Integration",
                        variable=self.operation_var, value="int",
-                       font=('Helvetica', 10),
-                       bg=self.colors['card'],
-                       fg=self.colors['primary'],
-                       selectcolor=self.colors['card'],
-                       activebackground=self.colors['card'],
-                       activeforeground=self.colors['primary']).pack(side=tk.LEFT, padx=5)
+                       **radio_config).pack(side=tk.LEFT, padx=5)
 
         tk.Radiobutton(operation_frame, text="Both",
                        variable=self.operation_var, value="both",
-                       font=('Helvetica', 10),
-                       bg=self.colors['card'],
-                       fg=self.colors['primary'],
-                       selectcolor=self.colors['card'],
-                       activebackground=self.colors['card'],
-                       activeforeground=self.colors['primary']).pack(side=tk.LEFT, padx=5)
+                       **radio_config).pack(side=tk.LEFT, padx=5)
 
         # Graph Visualization Card
         graph_card = tk.Frame(self.main_frame, bg=self.colors['card'],
@@ -181,13 +185,22 @@ class FunctionAnalyzerApp:
         graph_card.pack(fill=tk.BOTH, expand=True, pady=5)
 
         tk.Label(graph_card, text="Graph Visualization",
-                 font=('Helvetica', 12, 'bold'),
+                 font=('Arial', 12, 'bold'),
                  bg=self.colors['card'],
                  fg=self.colors['primary']).pack(anchor=tk.W, pady=(0, 10))
 
         self.figure = plt.Figure(figsize=(8, 4), dpi=100, facecolor=self.colors['card'])
         self.ax = self.figure.add_subplot(111)
         self.ax.set_facecolor(self.colors['card'])
+
+        # Style plot grid and ticks for dark theme
+        self.ax.grid(True, color='#444444', linestyle='--', alpha=0.5)
+        self.ax.tick_params(colors=self.colors['text'])
+        for spine in self.ax.spines.values():
+            spine.set_color(self.colors['border'])
+        self.ax.title.set_color(self.colors['text'])
+        self.ax.xaxis.label.set_color(self.colors['text'])
+        self.ax.yaxis.label.set_color(self.colors['text'])
 
         self.canvas_plot = FigureCanvasTkAgg(self.figure, master=graph_card)
         self.canvas_plot.get_tk_widget().pack(fill=tk.BOTH, expand=True)
@@ -200,7 +213,7 @@ class FunctionAnalyzerApp:
         results_card.pack(fill=tk.BOTH, expand=True, pady=5)
 
         tk.Label(results_card, text="Results",
-                 font=('Helvetica', 12, 'bold'),
+                 font=('Arial', 12, 'bold'),
                  bg=self.colors['card'],
                  fg=self.colors['primary']).pack(anchor=tk.W, pady=(0, 10))
 
@@ -214,9 +227,10 @@ class FunctionAnalyzerApp:
 
         # Add Text widget and link it to the scrollbar
         self.results_text = tk.Text(scrollable_frame, wrap=tk.WORD, font=('Courier', 10),
-                                    bg=self.colors['card'], fg=self.colors['text'],
+                                    bg='#121212', fg=self.colors['text'],
                                     height=10, relief=tk.SOLID, bd=1,
-                                    yscrollcommand=scrollbar.set)
+                                    yscrollcommand=scrollbar.set,
+                                    insertbackground=self.colors['text'])
         self.results_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Configure scrollbar
@@ -342,3 +356,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = FunctionAnalyzerApp(root)
     root.mainloop()
+
